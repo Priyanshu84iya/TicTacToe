@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uchiha Tic Tac Toe</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="dark">
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="sharingan-container">
+                <img src="sharingan.png" alt="Sharingan" class="sharingan-image">
+            </div>
+            <h1 class="loading-title">UCHIHA TIC TAC TOE</h1>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p class="loading-text">Activating Sharingan...</p>
+        </div>
+    </div>
+
+    <!-- Itachi Background -->
+    <div class="itachi-background">
+        <img src="itachi.png" alt="Itachi" class="itachi-image">
+    </div>
+
+    <!-- Background Animation -->
+    <div class="background-animation">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>    <!-- Theme Toggle Button (Fixed Position) -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+        <i class="fas fa-sun" id="themeIcon"></i>
+    </button>
+
+    <!-- Main Game Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="game-header">
+            <h1 class="game-title">UCHIHA TIC TAC TOE</h1>
+            <div class="game-mode-selector">
+                <button class="mode-btn active" data-mode="pvp">Player vs Player</button>
+                <button class="mode-btn" data-mode="pve">Player vs AI</button>
+            </div>
+        </header>
+
+        <!-- Game Status -->
+        <div class="game-status">
+            <div class="current-player">
+                Current Player: <span class="player-indicator" id="currentPlayerName">Player 1</span>
+            </div>
+            <div class="score-board">
+                <div class="score">
+                    <span class="label" id="playerXLabel">Player 1</span>
+                    <span class="x-score" id="scoreX">0</span>
+                </div>
+                <div class="score">
+                    <span class="label">Draws</span>
+                    <span class="draw-score" id="scoreDraw">0</span>
+                </div>
+                <div class="score">
+                    <span class="label" id="playerOLabel">Player 2</span>
+                    <span class="o-score" id="scoreO">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Board -->
+        <div class="game-board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+
+        <!-- Game Controls -->
+        <div class="game-controls">
+            <button class="restart-btn" id="restartBtn">
+                <span class="btn-glow"></span>
+                <span class="btn-text">Restart Game</span>
+            </button>
+            <button class="reset-scores-btn" id="resetScoresBtn">
+                <span class="btn-glow"></span>
+                <span class="btn-text">Reset Scores</span>
+            </button>
+        </div>
+    </div>    <!-- Player Names Modal -->
+    <div class="names-modal hidden" id="namesModal">
+        <div class="names-content">
+            <div class="uchiha-symbol">◉</div>
+            <h2 class="names-title">Enter Player Names</h2>
+            <div class="names-form">
+                <div class="player-input-group">
+                    <label class="input-label" for="player1Name">Player 1 (X):</label>
+                    <input type="text" class="player-name-input" id="player1Name" placeholder="Enter Player 1 name" maxlength="15">
+                </div>
+                <div class="vs-divider">VS</div>
+                <div class="player-input-group">
+                    <label class="input-label" for="player2Name" id="player2Label">Player 2 (O):</label>
+                    <input type="text" class="player-name-input" id="player2Name" placeholder="Enter Player 2 name" maxlength="15">
+                </div>
+                <div class="game-mode-selection">
+                    <div class="mode-selection-title">Select Game Mode</div>
+                    <div class="mode-buttons">
+                        <button class="mode-selection-btn active" data-mode="pvp">
+                            <span class="mode-icon">👥</span>
+                            <span class="mode-text">Player vs Player</span>
+                        </button>
+                        <button class="mode-selection-btn" data-mode="pve">
+                            <span class="mode-icon">🤖</span>
+                            <span class="mode-text">Player vs AI</span>
+                        </button>
+                    </div>
+                    <div class="difficulty-selector hidden" id="difficultySelector">
+                        <label for="aiDifficulty">AI Difficulty:</label>
+                        <select id="aiDifficulty">
+                            <option value="easy">Easy</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="start-game-btn" id="startGameBtn">
+                    <span class="btn-glow"></span>
+                    <span class="btn-text">Start Game</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Victory Modal -->
+    <div class="victory-modal hidden" id="victoryModal">
+        <div class="victory-content">
+            <div class="victory-icon"></div>
+            <h2 class="victory-text" id="victoryTitle">Victory!</h2>
+            <p class="victory-subtitle">
+                Winner: <span class="winner-name" id="winnerName">Player 1</span>
+            </p>
+            <button class="play-again-btn" id="playAgainBtn">
+                <span class="btn-glow"></span>
+                <span class="btn-text">Play Again</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Draw Modal -->
+    <div class="draw-modal hidden" id="drawModal">
+        <div class="draw-content">
+            <div class="draw-icon">🤝</div>
+            <h2 class="draw-text">It's a Draw!</h2>
+            <p class="draw-subtitle">Nobody wins this round!</p>
+            <button class="play-again-btn" id="playAgainDrawBtn">
+                <span class="btn-glow"></span>
+                <span class="btn-text">Play Again</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Watermark -->
+    <div class="watermark">© Pry Uchiha</div>
+
+    <!-- Audio Elements -->
+    <audio id="moveSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmkaBtn5zJJPDAnP9sPEciQKMIrR7dCBPwgcYrHr4qhYEg1Jm9rtz4FAAAdLnuLeqmQdBiR5q+LblVIPC0kp5b6mYRULSaHU28KGNwYfWauNykVhQAsDbDLO8dhDcLyR6OTWmEETAzm9xdqCXhQKVLfU8dKPSkUAASHbJaXvYREMAyVjrJqWczQNW7t+sMhTBT0H++9L9bGgxRMSVLpSzVzWBMFSv/DcC3zVRtJaLJEG7Y9tV8F" type="audio/wav">
+    </audio>
+    <audio id="winSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmkaBtn5zJJPDAnP9sPEciQKMIrR7dCBPwgcYrHr4qhYEg1Jm9rtz4FAAAdLnuLeqmQdBiR5q+LblVIPC0kp5b6mYRULSaHU28KGNwYfWauNykVhQAsDbDLO8dhDcLyR6OTWmEETAzm9xdqCXhQKVLfU8dKPSkUAASHbJaXvYREMAyVjrJqWczQNW7t+sMhTBT0H++9L9bGgxRMSVLpSzVzWBMFSv/DcC3zVRtJaLJEG7Y9tV8F" type="audio/wav">
+    </audio>
+    <audio id="drawSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmkaBtn5zJJPDAnP9sPEciQKMIrR7dCBPwgcYrHr4qhYEg1Jm9rtz4FAAAdLnuLeqmQdBiR5q+LblVIPC0kp5b6mYRULSaHU28KGNwYfWauNykVhQAsDbDLO8dhDcLyR6OTWmEETAzm9xdqCXhQKVLfU8dKPSkUAASHbJaXvYREMAyVjrJqWczQNW7t+sMhTBT0H++9L9bGgxRMSVLpSzVzWBMFSv/DcC3zVRtJaLJEG7Y9tV8F" type="audio/wav">
+    </audio>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
